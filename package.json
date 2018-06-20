@@ -1,15 +1,15 @@
 {
-  "name": "git-protect",
-  "version": "0.1.0",
+  "name": "plex-manage-cli",
+  "version": "0.1.1",
+  "license": "UNLICENSED",
   "main": "src/index.js",
-  "private": true,
-  "scripts": {
-    "start": "node-dev --respawn src/index.js"
-  },
   "bin": {
     "plex-manage": "src/cli.js"
   },
-  "devDependencies": {
+  "scripts": {
+    "start": "node-dev --respawn src/index.js"
+  },
+  "dependencies": {
     "chalk": "^2.4.1",
     "commander": "^2.15.1",
     "node-dev": "^3.1.3",

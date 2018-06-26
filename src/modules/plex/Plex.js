@@ -15,15 +15,15 @@ class Plex {
   }
 
   async getRecentlyAddedItems(type = 2) { // 2 defaults to tvshows
-    const  url = `${this.baseUrl}/hubs/home/recentlyAdded?X-Plex-Token=${this.token}&type=${type}&X-Plex-Container-Start=0&X-Plex-Container-Size=50`;
-    
+    const  url = `${this.baseUrl}/hubs/home/recentlyAdded?X-Plex-Token=${this.token}&type=${type}&X-Plex-Container-Start=0&X-Plex-Container-Size=100`;
+
     const options = {
       method: 'GET',
       headers: {
         accept: 'application/json'
       }
     };
-  
+
     try {
       const response = await fetch(url, options);
       return response.json();
@@ -36,7 +36,7 @@ class Plex {
 
   async refreshItemMetadata(itemId) {
     const url = `${this.baseUrl}/library/metadata/${itemId}/refresh?X-Plex-Token=${this.token}`;
-    
+
     const options = {
       method: 'PUT',
       headers: {
@@ -58,14 +58,14 @@ class Plex {
 
   async getSections() {
     const  url = `${this.baseUrl}/library/sections?X-Plex-Token=${this.token}`;
-    
+
     const options = {
       method: 'GET',
       headers: {
         accept: 'application/json'
       }
     };
-  
+
     try {
       const response = await fetch(url, options);
       return response.json();
@@ -78,14 +78,14 @@ class Plex {
 
   async getSection(sectionId) {
     const  url = `${this.baseUrl}/library/sections/${sectionId}?X-Plex-Token=${this.token}`;
-    
+
     const options = {
       method: 'GET',
       headers: {
         accept: 'application/json'
       }
     };
-  
+
     try {
       const response = await fetch(url, options);
       return response.json();
@@ -98,11 +98,11 @@ class Plex {
 
   async scanSection(sectionId) {
     const  url = `${this.baseUrl}/library/sections/${sectionId}/refresh?X-Plex-Token=${this.token}`;
-    
+
     const options = {
       method: 'GET'
     };
-  
+
     try {
       const response = await fetch(url, options);
       if (response.status >= 300) {

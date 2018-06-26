@@ -32,7 +32,7 @@ program.on('--help', function(){
   console.log('');
   console.log(chalk.green('  Environment variables:'));
   console.log('');
-  
+
   console.log('  PLEX_TOKEN   Plex server API token');
   console.log('  PLEX_HOST    Plex server hostname or ip (default: localhost)');
   console.log('  PLEX_PORT    Plex server hostname or ip (default: 32400)');
@@ -50,7 +50,7 @@ program
     items.MediaContainer.Directory.sort((section1, section2) => section1.key - section2.key).forEach((section) => {
       console.log(` ${section.key}        ${section.type}   ${section.title}`);
     });
-    
+
   });
 
 program
@@ -86,9 +86,15 @@ program
   .action(async () => {
     const plex = initPlex(program);
     const items = await plex.getRecentlyAddedItems(2);
-    const episodeItems = items.MediaContainer.Metadata.filter((item)=> item.type === 'episode');
+
+    const episodeItems = items.MediaContainer.Metadata.filter((item)=> ['episode', 'season'].indexOf(item.type) >= 0);
     for (const item of episodeItems) {
-      console.log(chalk.yellow(`refreshing ${item.grandparentTitle}, ${item.parentTitle}, episode ${item.index}`));
+      if (item.type === 'episode') {
+        console.log(chalk.yellow(`refreshing ${item.grandparentTitle}, ${item.parentTitle}, episode ${item.index}`));
+      }
+      else if (item.type === 'season') {
+        console.log(chalk.yellow(`refreshing ${item.parentTitle}, season ${item.index}`));
+      }
       await plex.refreshItemMetadata(item.ratingKey);
     }
     console.log(chalk.bold.green('refresh success'));
@@ -106,7 +112,7 @@ program
       await plex.refreshItemMetadata(item.ratingKey);
     }
     console.log(chalk.bold.green('refresh success'));
-    
+
   });
 
 program.parse(process.argv);

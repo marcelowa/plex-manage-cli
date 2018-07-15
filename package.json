@@ -1,6 +1,6 @@
 {
   "name": "plex-manage-cli",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "UNLICENSED",
   "main": "src/index.js",
   "bin": {
@@ -8,6 +8,10 @@
   },
   "scripts": {
     "start": "node-dev --respawn src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marcelowa/plex-manage-cli.git"
   },
   "dependencies": {
     "chalk": "^2.4.1",

@@ -81,6 +81,37 @@ program
   });
 
 program
+  .command('refresh-recent-tvshows')
+  .description('Refresh the metadata of recently added tvshow episodes')
+  .action(async () => {
+    const plex = initPlex(program);
+    const recentlyAddedItems = await plex.getRecentlyAddedItems(2);
+
+    const items = recentlyAddedItems.MediaContainer.Metadata;
+    const tvshows = {};
+
+    for (const item of items) {
+      if (item.type === 'episode') {
+        tvshows[item.grandparentRatingKey] = {id: item.grandparentRatingKey, title: item.grandparentTitle};
+      }
+      else if (item.type === 'season') {
+        tvshows[item.parentRatingKey] = {id: item.parentRatingKey, title: item.parentTitle};
+      }
+      else if (item.type === 'show'){
+        tvshows[item.ratingKey] = {id: item.ratingKey, title: item.title};
+      }
+    }
+
+    const tvshowsArr = Object.values(tvshows);
+    for (const item of tvshowsArr) {
+      console.log(chalk.yellow(`refreshing tvshow: ${item.title}`));
+      await plex.refreshItemMetadata(item.id);
+    }
+
+    console.log(chalk.bold.green('refresh success'));
+  });
+
+program
   .command('refresh-tvshows')
   .description('Refresh the metadata of recently added tvshow episodes')
   .action(async () => {
